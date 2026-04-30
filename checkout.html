@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const queryTheme = params.get('theme');
+    const savedTheme = localStorage.getItem('damura-theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = queryTheme === 'light' || queryTheme === 'dark'
+      ? queryTheme
+      : (savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : (prefersDark ? 'dark' : 'light'));
+    document.documentElement.classList.remove('dark', 'light');
+    document.documentElement.classList.add(initialTheme);
+  })();
+</script>
 <link href="./logo.svg" rel="icon" type="image/svg+xml">
 <link href="./logo.svg" rel="shortcut icon" type="image/svg+xml">
 <link href="./logo.svg" rel="apple-touch-icon">
@@ -14,6 +27,41 @@
   body { background-color: #161212; color: #eae0e0; min-height: 100dvh; }
   body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: 0.035; pointer-events: none; z-index: 9999; mix-blend-mode: overlay; }
   .backdrop-blur-xl { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+  .theme-toggle { border: 1px solid rgba(232, 179, 61, 0.25); background: rgba(13, 10, 10, 0.7); color: #f5e5bf; }
+  .theme-toggle:hover { border-color: rgba(232, 179, 61, 0.45); color: #fff4d8; }
+
+  html.light body { background: #f6f1e7; color: #2e2419; }
+  html.light body::after { opacity: 0.02; mix-blend-mode: multiply; }
+  html.light #checkout-header { background: rgba(247, 241, 230, 0.95); border-color: rgba(157, 109, 67, 0.22); }
+  html.light .theme-toggle { background: rgba(255, 255, 255, 0.82); border-color: rgba(157, 109, 67, 0.3); color: #5d3920; }
+  html.light .theme-toggle:hover { border-color: rgba(157, 109, 67, 0.5); color: #3c2414; }
+  html.light .brand-primary { color: #8e4f17 !important; }
+  html.light .brand-secondary { color: #ad2b29 !important; }
+  html.light #empty-cart { color: rgba(53, 40, 29, 0.78); }
+  html.light #empty-cart a { color: #a35f1f !important; }
+  html.light .summary-card { background: rgba(255, 255, 255, 0.88) !important; border-color: rgba(157, 109, 67, 0.25) !important; }
+  html.light .summary-title,
+  html.light .summary-total-label,
+  html.light .order-title { color: #2e2419 !important; }
+  html.light .summary-divider,
+  html.light .item-divider { background: rgba(140, 97, 58, 0.2) !important; }
+  html.light .summary-subtext,
+  html.light .item-unit-price,
+  html.light .confirm-note,
+  html.light .item-name { color: rgba(58, 44, 30, 0.74) !important; }
+  html.light .summary-total,
+  html.light .item-total,
+  html.light .item-action-icon,
+  html.light .back-icon { color: #9f5d1f !important; }
+  html.light .item-image-wrap { background: #e8dfd0 !important; }
+  html.light #confirm-modal { background: rgba(42, 31, 21, 0.45); }
+  html.light .confirm-panel { background: rgba(255, 255, 255, 0.94) !important; border-color: rgba(157, 109, 67, 0.25) !important; }
+  html.light .confirm-title { color: #2e2419 !important; }
+  html.light .confirm-text { color: rgba(53, 40, 29, 0.74) !important; }
+  html.light #checkout-footer { background: #efe6d6 !important; border-color: rgba(157, 109, 67, 0.25); }
+  html.light .footer-link { color: rgba(60, 44, 31, 0.48) !important; }
+  html.light .footer-link:hover { color: #2f2115 !important; }
+  html.light .footer-copy { color: rgba(60, 44, 31, 0.5) !important; }
 </style>
 <script id="tailwind-config">
   tailwind.config = {
@@ -53,19 +101,22 @@
 <body class="font-body-md text-on-background selection:bg-primary selection:text-on-primary">
 
 <!-- Header -->
-<header class="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-[#E8B33D]/20">
+<header id="checkout-header" class="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-[#E8B33D]/20">
   <div class="w-full flex justify-between items-center px-6 py-4">
     <a href="index.html" class="flex items-center gap-2 text-[#E8B33D] hover:opacity-70 transition-opacity">
-      <span class="material-symbols-outlined">arrow_back</span>
+      <span class="back-icon material-symbols-outlined">arrow_back</span>
     </a>
     <div class="flex items-center gap-2.5">
       <img src="logo.svg" alt="Damura Ramen" class="h-8 w-8 flex-shrink-0"/>
       <div class="flex flex-col leading-none">
-        <span class="font-['Krona_One'] tracking-[0.08em] text-[#E8B33D] text-base">Damura</span>
-        <span class="font-[Space_Grotesk] font-semibold tracking-[0.35em] text-[#C40F23] text-[8px] uppercase mt-0.5">Ramen</span>
+        <span class="brand-primary font-['Krona_One'] tracking-[0.08em] text-[#E8B33D] text-base">Damura</span>
+        <span class="brand-secondary font-[Space_Grotesk] font-semibold tracking-[0.35em] text-[#C40F23] text-[8px] uppercase mt-0.5">Ramen</span>
       </div>
     </div>
-    <div class="w-8"></div>
+    <button id="theme-toggle" type="button" class="theme-toggle h-9 px-3 rounded-lg inline-flex items-center gap-1.5 transition-colors">
+      <span id="theme-toggle-icon" class="material-symbols-outlined" style="font-size:18px">light_mode</span>
+      <span id="theme-toggle-label" class="font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase">Claro</span>
+    </button>
   </div>
 </header>
 
@@ -81,34 +132,34 @@
 
   <!-- Right: Summary -->
   <aside class="lg:col-span-5 lg:pl-12">
-    <div class="sticky top-32 bg-surface-container-low p-8 rounded-lg border border-[#E8B33D]/10 backdrop-blur-xl">
-      <h2 class="font-headline-md text-on-surface mb-8 border-b border-[#E8B33D]/20 pb-4">RESUMEN</h2>
+    <div class="summary-card sticky top-32 bg-surface-container-low p-8 rounded-lg border border-[#E8B33D]/10 backdrop-blur-xl">
+      <h2 class="summary-title font-headline-md text-on-surface mb-8 border-b border-[#E8B33D]/20 pb-4">RESUMEN</h2>
       <div class="space-y-4 mb-10">
         <div class="flex justify-between">
-          <span class="font-body-md text-on-surface-variant">Subtotal</span>
-          <span id="subtotal" class="font-body-md text-on-surface">0.00€</span>
+          <span class="summary-subtext font-body-md text-on-surface-variant">Subtotal</span>
+          <span id="subtotal" class="order-title font-body-md text-on-surface">0.00€</span>
         </div>
-        <div class="h-px w-full bg-[#E8B33D]/10 my-4"></div>
+        <div class="summary-divider h-px w-full bg-[#E8B33D]/10 my-4"></div>
         <div class="flex justify-between items-baseline">
-          <span class="font-headline-md text-on-surface">Total</span>
-          <span id="total-price" class="font-headline-lg text-[#E8B33D]">0.00€</span>
+          <span class="summary-total-label font-headline-md text-on-surface">Total</span>
+          <span id="total-price" class="summary-total font-headline-lg text-[#E8B33D]">0.00€</span>
         </div>
       </div>
       <button id="confirm-btn" onclick="confirmOrder()" class="w-full bg-[#E8B33D] hover:brightness-110 py-5 px-4 rounded-sm flex justify-center items-center gap-3 transition-all duration-300 active:scale-95 group">
         <span class="font-label-caps text-on-secondary-fixed text-lg">CONFIRMAR PEDIDO</span>
         <span class="material-symbols-outlined text-on-secondary-fixed group-hover:translate-x-1 transition-transform">arrow_forward</span>
       </button>
-      <p class="mt-6 text-center text-xs font-label-caps text-on-surface-variant/50">AL CONFIRMAR ACEPTAS LAS CONDICIONES DEL LOCAL.</p>
+      <p class="confirm-note mt-6 text-center text-xs font-label-caps text-on-surface-variant/50">AL CONFIRMAR ACEPTAS LAS CONDICIONES DEL LOCAL.</p>
     </div>
   </aside>
 </main>
 
 <!-- Confirmation Modal -->
 <div id="confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-  <div class="bg-[#1f1b1b] border border-[#E8B33D]/20 rounded-xl p-10 max-w-md w-full text-center space-y-6">
+  <div class="confirm-panel bg-[#1f1b1b] border border-[#E8B33D]/20 rounded-xl p-10 max-w-md w-full text-center space-y-6">
     <span class="material-symbols-outlined text-[#E8B33D] text-6xl" style="font-size:64px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 48">check_circle</span>
-    <h2 class="font-headline-lg text-on-surface">¡Pedido confirmado!</h2>
-    <p class="font-body-md text-on-surface-variant">Tu pedido está siendo preparado. ¡Gracias!</p>
+    <h2 class="confirm-title font-headline-lg text-on-surface">¡Pedido confirmado!</h2>
+    <p class="confirm-text font-body-md text-on-surface-variant">Tu pedido está siendo preparado. ¡Gracias!</p>
     <a href="index.html" class="inline-block bg-[#E8B33D] text-[#402d00] px-8 py-3 font-label-caps text-label-caps hover:brightness-110 transition-all">
       VOLVER AL MENÚ
     </a>
@@ -116,16 +167,16 @@
 </div>
 
 <!-- Footer -->
-<footer class="w-full bg-neutral-950 border-t border-[#E8B33D]/10 py-20">
+<footer id="checkout-footer" class="w-full bg-neutral-950 border-t border-[#E8B33D]/10 py-20">
   <div class="w-full flex flex-col items-center gap-8 text-center px-4">
-    <div class="text-[#E8B33D] font-black font-headline-display tracking-widest">DAMURA RAMEN</div>
+    <div class="brand-primary text-[#E8B33D] font-black font-headline-display tracking-widest">DAMURA RAMEN</div>
     <nav class="flex flex-wrap justify-center gap-x-12 gap-y-4">
-      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PHILOSOPHY</a>
-      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PROVENANCE</a>
-      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PRIVATE DINING</a>
-      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">CONTACT</a>
+      <a class="footer-link font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PHILOSOPHY</a>
+      <a class="footer-link font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PROVENANCE</a>
+      <a class="footer-link font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PRIVATE DINING</a>
+      <a class="footer-link font-label-caps text-white/30 hover:text-white transition-opacity" href="#">CONTACT</a>
     </nav>
-    <div class="font-label-caps text-white/30 text-[10px] mt-8">© 2026 DAMURA RAMEN.</div>
+    <div class="footer-copy font-label-caps text-white/30 text-[10px] mt-8">© 2026 DAMURA RAMEN.</div>
   </div>
 </footer>
 
@@ -133,6 +184,70 @@
 const BASE_IMG = 'https://pos.damuraramen.com/web/image/product.product/';
 
 let cart = JSON.parse(localStorage.getItem('damura-cart')||'[]');
+
+function getThemeFromUrl() {
+  const value = new URLSearchParams(window.location.search).get('theme');
+  return value === 'light' || value === 'dark' ? value : null;
+}
+
+function getStoredTheme() {
+  const value = localStorage.getItem('damura-theme');
+  return value === 'light' || value === 'dark' ? value : null;
+}
+
+function getActiveTheme() {
+  if (document.documentElement.classList.contains('light')) return 'light';
+  return 'dark';
+}
+
+function syncThemeInUrl(theme) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('theme', theme);
+  window.history.replaceState({}, '', url);
+}
+
+function syncThemeLinks(theme) {
+  document.querySelectorAll('a[href]').forEach((link) => {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    const parsed = new URL(href, window.location.href);
+    if (!parsed.pathname.endsWith('.html')) return;
+    parsed.searchParams.set('theme', theme);
+    link.setAttribute('href', parsed.toString());
+  });
+}
+
+function updateThemeToggle(theme) {
+  const icon = document.getElementById('theme-toggle-icon');
+  const label = document.getElementById('theme-toggle-label');
+  if (!icon || !label) return;
+  icon.textContent = theme === 'light' ? 'dark_mode' : 'light_mode';
+  label.textContent = theme === 'light' ? 'Oscuro' : 'Claro';
+}
+
+function applyTheme(theme, options = {}) {
+  const persist = options.persist !== false;
+  const updateUrl = options.updateUrl !== false;
+  document.documentElement.classList.remove('dark', 'light');
+  document.documentElement.classList.add(theme);
+  if (persist) localStorage.setItem('damura-theme', theme);
+  if (updateUrl) syncThemeInUrl(theme);
+  syncThemeLinks(theme);
+  updateThemeToggle(theme);
+}
+
+function toggleTheme() {
+  const next = getActiveTheme() === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+}
+
+function initTheme() {
+  const queryTheme = getThemeFromUrl();
+  const storedTheme = getStoredTheme();
+  const defaultTheme = queryTheme || storedTheme || 'dark';
+  applyTheme(defaultTheme, { persist: false, updateUrl: !!queryTheme });
+  document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+}
 
 function saveCart(){ localStorage.setItem('damura-cart', JSON.stringify(cart)); }
 function getItem(id){ return cart.find(i=>i.id===id); }
@@ -165,29 +280,29 @@ function render(){
       const img = BASE_IMG+item.id+'/image_512';
       return `
         <div class="flex items-center gap-5 group">
-          <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-[#231f1f] relative">
+          <div class="item-image-wrap w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-[#231f1f] relative">
             <img src="${img}" alt="${item.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" onerror="this.style.opacity='0'"/>
           </div>
           <div class="flex-grow min-w-0">
             <div class="flex justify-between items-start gap-2">
-              <h3 class="font-headline-md text-on-surface text-base leading-tight">${item.name}</h3>
-              <span class="font-headline-md text-[#E8B33D] whitespace-nowrap">${(item.price*item.qty).toFixed(2)}€</span>
+              <h3 class="item-name font-headline-md text-on-surface text-base leading-tight">${item.name}</h3>
+              <span class="item-total font-headline-md text-[#E8B33D] whitespace-nowrap">${(item.price*item.qty).toFixed(2)}€</span>
             </div>
             <div class="flex items-center gap-3 mt-3">
               <div class="bg-[#E8B33D] text-[#402d00] flex items-center">
                 <button onclick="subQty(${item.id})" class="px-2 py-1.5 hover:bg-black/10 active:scale-90 transition-all">
-                  <span class="material-symbols-outlined leading-none" style="font-size:16px">${item.qty===1?'delete':'remove'}</span>
+                  <span class="item-action-icon material-symbols-outlined leading-none" style="font-size:16px">${item.qty===1?'delete':'remove'}</span>
                 </button>
                 <span class="font-[Space_Grotesk] font-semibold text-sm min-w-[1.5rem] text-center">${item.qty}</span>
                 <button onclick="addQty(${item.id})" class="px-2 py-1.5 hover:bg-black/10 active:scale-90 transition-all">
-                  <span class="material-symbols-outlined leading-none" style="font-size:16px">add</span>
+                  <span class="item-action-icon material-symbols-outlined leading-none" style="font-size:16px">add</span>
                 </button>
               </div>
-              <span class="font-body-md text-on-surface-variant text-sm">${item.price.toFixed(2)}€ / ud.</span>
+              <span class="item-unit-price font-body-md text-on-surface-variant text-sm">${item.price.toFixed(2)}€ / ud.</span>
             </div>
           </div>
         </div>
-        <div class="h-px w-full bg-[#E8B33D]/10"></div>
+        <div class="item-divider h-px w-full bg-[#E8B33D]/10"></div>
       `;
     }).join('');
   }
@@ -203,6 +318,7 @@ function confirmOrder(){
   document.getElementById('confirm-modal').classList.remove('hidden');
 }
 
+initTheme();
 render();
 </script>
 </body>
