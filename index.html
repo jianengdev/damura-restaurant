@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;900&family=Krona+One&family=Space+Grotesk:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
   tailwind.config = {
@@ -52,41 +52,59 @@
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   body { min-height: 100dvh; background-color: #161212; color: #eae0e0; }
+  body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: 0.035; pointer-events: none; z-index: 9999; mix-blend-mode: overlay; }
 </style>
 </head>
 <body class="bg-background text-on-background font-body-md">
 
-<!-- Header -->
-<header class="fixed top-0 w-full z-50 bg-neutral-950/90 backdrop-blur-xl border-b border-[#E8B33D]/20">
-  <div class="w-full flex justify-between items-center px-6 py-4">
-    <span class="material-symbols-outlined text-[#E8B33D] cursor-pointer">menu</span>
-    <h1 class="text-[#E8B33D] font-bold tracking-[0.2em] text-xl font-headline-display uppercase">Damura</h1>
-    <span class="material-symbols-outlined text-[#E8B33D] cursor-pointer">search</span>
+<!-- ===== HEADER (fixed, contains logo row + category nav row) ===== -->
+<header class="fixed top-0 w-full z-50 bg-[#0d0a0a]/95 backdrop-blur-xl">
+  <!-- Logo row -->
+  <div class="w-full flex items-center px-5 py-3 border-b border-[#E8B33D]/15">
+    <!-- Left spacer -->
+    <div class="flex-1"></div>
+    <!-- Center: Logo + brand name -->
+    <a href="index.html" class="flex items-center gap-3 group">
+      <img src="logo.svg" alt="Damura Ramen" class="h-10 w-10 flex-shrink-0 group-hover:scale-105 transition-transform duration-300"/>
+      <div class="flex flex-col leading-none">
+        <span class="font-['Krona_One'] tracking-[0.08em] text-[#E8B33D] text-xl">Damura</span>
+        <span class="font-[Space_Grotesk] font-semibold tracking-[0.35em] text-[#C40F23] text-[9px] uppercase mt-0.5">Ramen</span>
+      </div>
+    </a>
+    <!-- Right: Cart -->
+    <div class="flex-1 flex justify-end">
+      <a href="checkout.html" id="header-cart-link" class="hidden items-center gap-2 group">
+        <div class="relative">
+          <span class="material-symbols-outlined text-[#E8B33D]" style="font-size:22px">shopping_bag</span>
+          <span id="header-cart-count" class="absolute -top-1 -right-1 bg-[#C40F23] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none">0</span>
+        </div>
+        <span id="header-cart-total" class="font-[Space_Grotesk] font-semibold text-sm text-white/70 group-hover:text-white transition-colors">0.00€</span>
+      </a>
+    </div>
+  </div>
+  <!-- Category nav row -->
+  <div class="overflow-x-auto hide-scrollbar flex gap-2.5 px-4 py-2.5 border-b border-[#E8B33D]/10">
+    <button onclick="filterCategory('all')" data-cat="all" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-[#C40F23] bg-[#C40F23] text-white font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase transition-all">TODO</button>
+    <button onclick="filterCategory('entrantes')" data-cat="entrantes" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">ENTRANTES</button>
+    <button onclick="filterCategory('baos')" data-cat="baos" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">BAOS</button>
+    <button onclick="filterCategory('gyoza')" data-cat="gyoza" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">GYOZA</button>
+    <button onclick="filterCategory('principal')" data-cat="principal" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">PLATOS PRINCIPALES</button>
+    <button onclick="filterCategory('postres')" data-cat="postres" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">POSTRES</button>
+    <button onclick="filterCategory('bebidas')" data-cat="bebidas" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">BEBIDAS</button>
+    <button onclick="filterCategory('cerveza')" data-cat="cerveza" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">CERVEZA</button>
+    <button onclick="filterCategory('vino')" data-cat="vino" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">VINO</button>
+    <button onclick="filterCategory('sake')" data-cat="sake" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">SAKE</button>
+    <button onclick="filterCategory('te')" data-cat="te" class="cat-btn flex-shrink-0 px-4 py-1.5 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-[10px] tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">TÉ &amp; CAFÉ</button>
   </div>
 </header>
 
-<main class="pt-24 pb-40 w-full px-4 lg:px-8">
-  <!-- Category Nav -->
-  <section class="mb-10 overflow-x-auto hide-scrollbar flex gap-3 sticky top-16 bg-[#161212]/95 backdrop-blur-md py-5 z-40">
-    <button onclick="filterCategory('all')" data-cat="all" class="cat-btn flex-shrink-0 px-5 py-2 border border-[#E8B33D] bg-[#E8B33D] text-[#402d00] font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase transition-all">TODO</button>
-    <button onclick="filterCategory('entrantes')" data-cat="entrantes" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">ENTRANTES</button>
-    <button onclick="filterCategory('baos')" data-cat="baos" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">BAOS</button>
-    <button onclick="filterCategory('gyoza')" data-cat="gyoza" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">GYOZA</button>
-    <button onclick="filterCategory('principal')" data-cat="principal" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">PLATOS PRINCIPALES</button>
-    <button onclick="filterCategory('postres')" data-cat="postres" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">POSTRES</button>
-    <button onclick="filterCategory('bebidas')" data-cat="bebidas" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">BEBIDAS</button>
-    <button onclick="filterCategory('cerveza')" data-cat="cerveza" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">CERVEZA</button>
-    <button onclick="filterCategory('vino')" data-cat="vino" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">VINO</button>
-    <button onclick="filterCategory('sake')" data-cat="sake" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">SAKE</button>
-    <button onclick="filterCategory('te')" data-cat="te" class="cat-btn flex-shrink-0 px-5 py-2 border border-white/10 text-white/50 font-[Space_Grotesk] font-semibold text-xs tracking-widest uppercase hover:border-[#E8B33D]/40 transition-all">TÉ &amp; CAFÉ</button>
-  </section>
-
-  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12"></div>
+<main class="pt-[108px] pb-40 w-full px-4 lg:px-8">
+  <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-8 gap-y-12 pt-6"></div>
 </main>
 
-<!-- Float Cart -->
+<!-- Floating Cart Bar -->
 <div id="cart-bar" class="fixed bottom-0 left-0 w-full z-50 px-4 pb-6 pt-2 bg-gradient-to-t from-[#161212] via-[#161212]/80 to-transparent hidden">
-  <div class="w-full bg-neutral-950/95 backdrop-blur-2xl border border-[#E8B33D]/20 rounded-xl flex justify-between items-center px-6 py-4 shadow-2xl">
+  <div class="w-full bg-[#0d0a0a]/95 backdrop-blur-2xl border border-[#E8B33D]/20 rounded-xl flex justify-between items-center px-6 py-4 shadow-2xl">
     <div class="flex items-center gap-4">
       <div class="relative">
         <span class="material-symbols-outlined text-[#E8B33D] text-3xl">shopping_bag</span>
@@ -105,122 +123,138 @@
 
 <!-- Footer -->
 <footer class="w-full flex flex-col items-center gap-8 text-center px-4 py-20 bg-neutral-950 border-t border-[#E8B33D]/10">
-  <h2 class="text-[#E8B33D] font-black font-[Epilogue] tracking-widest text-lg uppercase">DAMURA RAMEN</h2>
+  <div class="flex items-center gap-4">
+    <img src="logo.svg" alt="" class="h-12 w-12 opacity-80"/>
+    <div class="flex flex-col items-start leading-none">
+      <span class="font-['Krona_One'] tracking-[0.08em] text-[#E8B33D] text-2xl">Damura</span>
+      <span class="font-[Space_Grotesk] font-semibold tracking-[0.35em] text-[#C40F23] text-[10px] uppercase mt-1">Ramen</span>
+    </div>
+  </div>
   <nav class="flex flex-wrap justify-center gap-x-8 gap-y-4">
     <a class="font-[Epilogue] text-xs uppercase tracking-widest text-white/30 hover:text-white transition-opacity" href="#">Filosofía</a>
     <a class="font-[Epilogue] text-xs uppercase tracking-widest text-white/30 hover:text-white transition-opacity" href="#">Origen</a>
     <a class="font-[Epilogue] text-xs uppercase tracking-widest text-white/30 hover:text-white transition-opacity" href="#">Reservas</a>
     <a class="font-[Epilogue] text-xs uppercase tracking-widest text-white/30 hover:text-white transition-opacity" href="#">Contacto</a>
   </nav>
-  <p class="font-[Epilogue] text-xs uppercase tracking-widest text-white/20">© 2026 DAMURA RAMEN.</p>
+  <p class="font-[Epilogue] text-xs uppercase tracking-widest text-white/20">© 2026 Damura Ramen.</p>
 </footer>
 
 <script>
 const BASE_IMG = 'https://pos.damuraramen.com/web/image/product.product/';
 const PRODUCTS = [
-  {id:132,name:'Yasai Harumaki',price:5.00,cat:'entrantes',catLabel:'ENTRANTE'},
-  {id:133,name:'Yasai Harumaki Vegano',price:5.50,cat:'entrantes',catLabel:'ENTRANTE VEGANO'},
-  {id:134,name:'Agedashi Tofu',price:5.50,cat:'entrantes',catLabel:'ENTRANTE'},
-  {id:162,name:'Berenjena Estrufada',price:5.50,cat:'entrantes',catLabel:'ENTRANTE'},
-  {id:130,name:'Ensalada Menma',price:5.95,cat:'entrantes',catLabel:'ENTRANTE'},
-  {id:135,name:'Nasu Dengaku',price:6.25,cat:'entrantes',catLabel:'ENTRANTE VEGANO'},
-  {id:129,name:'Wakame Su',price:5.00,cat:'entrantes',catLabel:'ENTRANTE'},
-  {id:116,name:'Bao de Pollo Frito Coreano',price:6.95,cat:'baos',catLabel:'BAO'},
-  {id:161,name:'Bao de Panceta Duroc',price:6.95,cat:'baos',catLabel:'BAO'},
-  {id:119,name:'Bao de Langostino Tigre',price:9.00,cat:'baos',catLabel:'BAO'},
-  {id:117,name:'Bao de Pastrami Ahumado',price:8.90,cat:'baos',catLabel:'BAO'},
-  {id:118,name:'Bao de Cangrejo Cocha Blanda',price:9.00,cat:'baos',catLabel:'BAO'},
-  {id:137,name:'Bao de Shitake',price:6.50,cat:'baos',catLabel:'BAO VEGANO'},
-  {id:120,name:'Gyoza de Cerdo y Langostino',price:11.00,cat:'gyoza',catLabel:'GYOZA'},
-  {id:121,name:'Gyoza de Vaca Madurada',price:11.00,cat:'gyoza',catLabel:'GYOZA'},
-  {id:155,name:'Gyoza de Edamame',price:10.00,cat:'gyoza',catLabel:'GYOZA VEGANA'},
-  {id:154,name:'Gyoza de Setas',price:10.00,cat:'gyoza',catLabel:'GYOZA VEGANA'},
-  {id:125,name:'Ramen Tonkotsu',price:14.50,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:185,name:'Ramen Shio',price:14.50,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:139,name:'Ramen Vegano',price:14.00,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:179,name:'Ramen Premio Shio con Pastrami',price:16.50,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:194,name:'Ramen Tonkotsu con Pastrami',price:16.50,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:167,name:'Arroz Blanco',price:2.50,cat:'principal',catLabel:'ACOMPAÑAMIENTO'},
-  {id:216,name:'Arroz Salteado con Panceta Duroc',price:13.50,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:126,name:'Kamo Yaki Soba',price:13.95,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:218,name:'Tsukemen',price:14.50,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:138,name:'Yaki Soba Vegano',price:12.95,cat:'principal',catLabel:'PLATO PRINCIPAL'},
-  {id:144,name:'Bola Vegano',price:4.00,cat:'postres',catLabel:'POSTRE'},
-  {id:173,name:'Bola Helado Té Verde',price:3.00,cat:'postres',catLabel:'POSTRE'},
-  {id:174,name:'Bola Helado Yuzu con Coco',price:3.50,cat:'postres',catLabel:'POSTRE'},
-  {id:165,name:'Manju Bolita Sésamo',price:6.00,cat:'postres',catLabel:'POSTRE'},
-  {id:214,name:'Mochi Donut con Helado Chocolate',price:8.00,cat:'postres',catLabel:'POSTRE'},
-  {id:128,name:'Mochi Donut con Helado Té Verde',price:6.50,cat:'postres',catLabel:'POSTRE'},
-  {id:127,name:'Mochi Donut con Helado Yuzu Coco',price:7.00,cat:'postres',catLabel:'POSTRE'},
-  {id:145,name:'Tiramisú de Té',price:6.50,cat:'postres',catLabel:'POSTRE'},
-  {id:215,name:'Agua Natural 500ml',price:2.80,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:100,name:'Agua con Gas Lanjaron 50cl',price:3.20,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:95,name:'Cocacola Zero',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:94,name:'Cocacola',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:92,name:'Fanta Naranja',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:91,name:'Fanta Limón',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:90,name:'Aquarius',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:187,name:'Aquarius de Melocotón',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:93,name:'Aquarius Limón',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:188,name:'Nestea de Maracuyá',price:2.95,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:35,name:'Ramune',price:3.50,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:191,name:'Zumo de Melocotón',price:2.50,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:189,name:'Zumo de Naranja',price:2.50,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:190,name:'Zumo de Piña',price:2.50,cat:'bebidas',catLabel:'BEBIDA'},
-  {id:111,name:'Caña de Águila',price:2.80,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:158,name:'Doble de Águila Sin Filtrar',price:3.80,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:47,name:'Radler',price:3.20,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:105,name:'Amstel Tostada',price:3.20,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:103,name:'Águila Dorada',price:3.30,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:49,name:'Asahi',price:3.50,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:48,name:'Sapporo',price:3.50,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:52,name:'COEDO Ruri',price:4.50,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:51,name:'COEDO Beniaka',price:4.50,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:53,name:'COEDO Shiro',price:4.50,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:104,name:'Heineken 0,0 Sin Alcohol',price:3.00,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:84,name:'Licor de Ciruela',price:3.80,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:106,name:'Cruzcampo Sin Gluten',price:3.20,cat:'cerveza',catLabel:'CERVEZA'},
-  {id:76,name:'Aeronauta',price:29.80,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:72,name:'Jean Leon 3055 Blanco',price:22.50,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:114,name:'Jean Leon Rosado',price:22.50,cat:'vino',catLabel:'ROSADO'},
-  {id:77,name:'La Poda Godello',price:19.00,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:73,name:'Marqués de Riscal',price:22.00,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:75,name:'Pazo das Bruxas',price:22.50,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:74,name:'Terras Gauda',price:26.00,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:78,name:'Venta Puerta N5',price:19.00,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:148,name:'Verdeo (Vegano)',price:16.50,cat:'vino',catLabel:'VINO BLANCO'},
-  {id:65,name:'22 Pies',price:16.95,cat:'vino',catLabel:'VINO TINTO'},
-  {id:63,name:'Carlota Suria',price:24.00,cat:'vino',catLabel:'VINO TINTO'},
-  {id:70,name:'Celeste Roble',price:19.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:66,name:'Cosme Palacio Crianza',price:27.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:79,name:'JEAN LEON 3055 Tinto',price:22.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:62,name:'Les Alcusses',price:22.00,cat:'vino',catLabel:'VINO TINTO'},
-  {id:64,name:'Mal Pastor',price:18.00,cat:'vino',catLabel:'VINO TINTO'},
-  {id:68,name:'Monteabellon Crianza',price:24.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:71,name:'Petit Pittacum',price:17.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:67,name:'Sierra Cantabria Crianza',price:23.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:69,name:'Valduero Una Cepa',price:42.00,cat:'vino',catLabel:'VINO TINTO'},
-  {id:61,name:'Venta Puerto N12',price:21.50,cat:'vino',catLabel:'VINO TINTO'},
-  {id:86,name:'Copa de Vino Tinto (Rioja)',price:3.60,cat:'vino',catLabel:'COPA'},
-  {id:186,name:'Copa de Vino Blanco Albariño',price:3.80,cat:'vino',catLabel:'COPA'},
-  {id:85,name:'Jarra de Sake',price:6.00,cat:'sake',catLabel:'SAKE'},
-  {id:107,name:'Karatanba',price:12.50,cat:'sake',catLabel:'SAKE'},
-  {id:109,name:'MIO CLEAR (Sparkling Sake)',price:11.50,cat:'sake',catLabel:'SAKE'},
-  {id:110,name:'Nigori Sake',price:11.50,cat:'sake',catLabel:'SAKE'},
-  {id:115,name:'Shouchu',price:18.50,cat:'sake',catLabel:'SAKE'},
-  {id:108,name:'Shuwa Shuwa',price:13.50,cat:'sake',catLabel:'SAKE'},
-  {id:46,name:'Sake Sin Alcohol',price:11.50,cat:'sake',catLabel:'SAKE'},
-  {id:150,name:'Té Verde',price:2.80,cat:'te',catLabel:'TÉ'},
-  {id:55,name:'Té Dianhong de Árbol Antiguo',price:3.50,cat:'te',catLabel:'TÉ'},
-  {id:57,name:'Té Ganpu',price:3.20,cat:'te',catLabel:'TÉ'},
-  {id:56,name:'Té Jin Jun Mei',price:3.20,cat:'te',catLabel:'TÉ'},
-  {id:58,name:'Té Tieguanyin',price:3.50,cat:'te',catLabel:'TÉ'},
-  {id:40,name:'Americano',price:1.90,cat:'te',catLabel:'CAFÉ'},
-  {id:41,name:'Bombón',price:2.20,cat:'te',catLabel:'CAFÉ'},
-  {id:39,name:'Café con Leche',price:2.50,cat:'te',catLabel:'CAFÉ'},
-  {id:37,name:'Café Solo',price:1.90,cat:'te',catLabel:'CAFÉ'},
-  {id:42,name:'Carajillo',price:3.00,cat:'te',catLabel:'CAFÉ'},
-  {id:38,name:'Cortado',price:2.20,cat:'te',catLabel:'CAFÉ'},
+  // ENTRANTES
+  {id:132,name:'Yasai Harumaki',price:5.00,cat:'entrantes',catLabel:'ENTRANTE',desc:'Rollitos de primavera vegetales crujientes con setas shiitake y salsa agridulce.'},
+  {id:133,name:'Yasai Harumaki Vegano',price:5.50,cat:'entrantes',catLabel:'ENTRANTE VEGANO',desc:'Versión 100% vegana de nuestros rollitos, rellenos de verduras de temporada.'},
+  {id:134,name:'Agedashi Tofu',price:5.50,cat:'entrantes',catLabel:'ENTRANTE',desc:'Tofu sedoso rebozado en almidón, frito y servido con caldo tentsuyu caliente.'},
+  {id:162,name:'Berenjena Estrufada',price:5.50,cat:'entrantes',catLabel:'ENTRANTE',desc:'Berenjena asada a la llama con miso dulce y aceite de shiso.'},
+  {id:130,name:'Ensalada Menma',price:5.95,cat:'entrantes',catLabel:'ENTRANTE',desc:'Brotes de bambú marinados con aceite de sésamo y cebollino fresco.'},
+  {id:135,name:'Nasu Dengaku',price:6.25,cat:'entrantes',catLabel:'ENTRANTE VEGANO',desc:'Berenjena glaseada con pasta de miso blanco y sésamo tostado.'},
+  {id:129,name:'Wakame Su',price:5.00,cat:'entrantes',catLabel:'ENTRANTE',desc:'Alga wakame macerada en vinagre de arroz con pepino y semillas de sésamo.'},
+  // BAOS
+  {id:116,name:'Bao de Pollo Frito Coreano',price:6.95,cat:'baos',catLabel:'BAO',desc:'Pan al vapor esponjoso con pollo frito estilo coreano, kimchi y sriracha mayonesa.'},
+  {id:161,name:'Bao de Panceta Duroc',price:6.95,cat:'baos',catLabel:'BAO',desc:'Panceta ibérica Duroc confitada, lechuga crujiente y salsa de hosin ahumada.'},
+  {id:119,name:'Bao de Langostino Tigre',price:9.00,cat:'baos',catLabel:'BAO',desc:'Langostino tigre en tempura, mayonesa de sriracha y pepino encurtido.'},
+  {id:117,name:'Bao de Pastrami Ahumado',price:8.90,cat:'baos',catLabel:'BAO',desc:'Pastrami artesanal ahumado en frío, pepinillo encurtido y mostaza de Dijon.'},
+  {id:118,name:'Bao de Cangrejo Cocha Blanda',price:9.00,cat:'baos',catLabel:'BAO',desc:'Cangrejo de concha blanda frito, ensalada de rábano y alioli de yuzu.'},
+  {id:137,name:'Bao de Shitake',price:6.50,cat:'baos',catLabel:'BAO VEGANO',desc:'Setas shitake a la plancha con teriyaki vegano y cebolleta encurtida.'},
+  // GYOZA
+  {id:120,name:'Gyoza de Cerdo y Langostino',price:11.00,cat:'gyoza',catLabel:'GYOZA',desc:'Empanadillas japonesas al vapor y a la plancha rellenas de cerdo y langostino.'},
+  {id:121,name:'Gyoza de Vaca Madurada',price:11.00,cat:'gyoza',catLabel:'GYOZA',desc:'Empanadillas con carne de vaca madurada 30 días, cebollino y jengibre.'},
+  {id:155,name:'Gyoza de Edamame',price:10.00,cat:'gyoza',catLabel:'GYOZA VEGANA',desc:'Empanadillas veganas con edamame, tofu ahumado y jengibre fresco.'},
+  {id:154,name:'Gyoza de Setas',price:10.00,cat:'gyoza',catLabel:'GYOZA VEGANA',desc:'Mix de setas silvestres salteadas con aceite de trufa y ajo negro.'},
+  // PLATOS PRINCIPALES
+  {id:125,name:'Ramen Tonkotsu',price:14.50,cat:'principal',catLabel:'RAMEN',desc:'Caldo cremoso de huesos de cerdo cocinado 18 horas. Chashu, brote de bambú y huevo ajitsuke.'},
+  {id:185,name:'Ramen Shio',price:14.50,cat:'principal',catLabel:'RAMEN',desc:'Caldo dorado y ligero con sal de Okinawa, pollo de corral y yuzu.'},
+  {id:139,name:'Ramen Vegano',price:14.00,cat:'principal',catLabel:'RAMEN',desc:'Caldo dashi de kombu y shiitake, tofu sedoso y verduras de temporada.'},
+  {id:179,name:'Ramen Premio Shio con Pastrami',price:16.50,cat:'principal',catLabel:'RAMEN PREMIUM',desc:'Nuestro Shio con pastrami ahumado artesanal cortado a mano.'},
+  {id:194,name:'Ramen Tonkotsu con Pastrami',price:16.50,cat:'principal',catLabel:'RAMEN PREMIUM',desc:'Caldo tonkotsu clásico elevado con generosas lonchas de pastrami ahumado.'},
+  {id:167,name:'Arroz Blanco',price:2.50,cat:'principal',catLabel:'ACOMPAÑAMIENTO',desc:'Arroz japonés de grano corto cocido al vapor.'},
+  {id:216,name:'Arroz Salteado con Panceta Duroc',price:13.50,cat:'principal',catLabel:'PLATO PRINCIPAL',desc:'Arroz salteado al wok con panceta Duroc, huevos y wakame.'},
+  {id:126,name:'Kamo Yaki Soba',price:13.95,cat:'principal',catLabel:'PLATO PRINCIPAL',desc:'Fideos soba salteados al wok con pato confitado y verduras de temporada.'},
+  {id:218,name:'Tsukemen',price:14.50,cat:'principal',catLabel:'PLATO PRINCIPAL',desc:'Fideos fríos gruesos para mojar en caldo concentrado caliente de colágeno.'},
+  {id:138,name:'Yaki Soba Vegano',price:12.95,cat:'principal',catLabel:'PLATO PRINCIPAL',desc:'Fideos soba salteados con tofu, verduras y salsa tare vegana.'},
+  // POSTRES
+  {id:144,name:'Bola Vegano',price:4.00,cat:'postres',catLabel:'POSTRE',desc:'Bola de helado vegano artesanal.'},
+  {id:173,name:'Bola Helado Té Verde',price:3.00,cat:'postres',catLabel:'POSTRE',desc:'Helado artesanal de matcha japonés ceremonial.'},
+  {id:174,name:'Bola Helado Yuzu con Coco',price:3.50,cat:'postres',catLabel:'POSTRE',desc:'Helado de yuzu cítrico con leche de coco cremosa.'},
+  {id:165,name:'Manju Bolita Sésamo',price:6.00,cat:'postres',catLabel:'POSTRE',desc:'Bolita de pasta dulce de sésamo negro envuelta en masa de arroz.'},
+  {id:214,name:'Mochi Donut con Helado Chocolate',price:8.00,cat:'postres',catLabel:'POSTRE',desc:'Donut de mochi esponjoso coronado con una bola de helado de chocolate belga.'},
+  {id:128,name:'Mochi Donut con Helado Té Verde',price:6.50,cat:'postres',catLabel:'POSTRE',desc:'Donut de mochi con helado de matcha y polvo de té ceremonial.'},
+  {id:127,name:'Mochi Donut con Helado Yuzu Coco',price:7.00,cat:'postres',catLabel:'POSTRE',desc:'Donut de mochi con helado de yuzu y coco tostado.'},
+  {id:145,name:'Tiramisú de Té',price:6.50,cat:'postres',catLabel:'POSTRE',desc:'Tiramisú japonés elaborado con té verde matcha, mascarpone y bizcocho de mochi.'},
+  // BEBIDAS
+  {id:215,name:'Agua Natural 500ml',price:2.80,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:100,name:'Agua con Gas Lanjaron 50cl',price:3.20,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:95,name:'Cocacola Zero',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:94,name:'Cocacola',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:92,name:'Fanta Naranja',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:91,name:'Fanta Limón',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:90,name:'Aquarius',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:187,name:'Aquarius de Melocotón',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:93,name:'Aquarius Limón',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:188,name:'Nestea de Maracuyá',price:2.95,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:35,name:'Ramune',price:3.50,cat:'bebidas',catLabel:'BEBIDA',desc:'Refresco japonés con bola de mármol. Sabor original.'},
+  {id:191,name:'Zumo de Melocotón',price:2.50,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:189,name:'Zumo de Naranja',price:2.50,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  {id:190,name:'Zumo de Piña',price:2.50,cat:'bebidas',catLabel:'BEBIDA',desc:''},
+  // CERVEZA
+  {id:111,name:'Caña de Águila',price:2.80,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  {id:158,name:'Doble de Águila Sin Filtrar',price:3.80,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  {id:47,name:'Radler',price:3.20,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  {id:105,name:'Amstel Tostada',price:3.20,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  {id:103,name:'Águila Dorada',price:3.30,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  {id:49,name:'Asahi',price:3.50,cat:'cerveza',catLabel:'CERVEZA JAPONESA',desc:'Cerveza japonesa premium de malta.'},
+  {id:48,name:'Sapporo',price:3.50,cat:'cerveza',catLabel:'CERVEZA JAPONESA',desc:'La cerveza más antigua del Japón, refrescante y ligera.'},
+  {id:52,name:'COEDO Ruri',price:4.50,cat:'cerveza',catLabel:'CRAFT JAPONESA',desc:'Lager artesanal japonesa. Brillante y suave con aroma floral.'},
+  {id:51,name:'COEDO Beniaka',price:4.50,cat:'cerveza',catLabel:'CRAFT JAPONESA',desc:'Ale ámbar elaborada con batata kawagoe. Notas dulces y caramelizadas.'},
+  {id:53,name:'COEDO Shiro',price:4.50,cat:'cerveza',catLabel:'CRAFT JAPONESA',desc:'Trigo blanco estilo belga con aromas cítricos y especiados.'},
+  {id:104,name:'Heineken 0,0 Sin Alcohol',price:3.00,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  {id:84,name:'Licor de Ciruela',price:3.80,cat:'cerveza',catLabel:'LICOR',desc:'Umeshu japonés, licor de ciruela dulce y afrutado.'},
+  {id:106,name:'Cruzcampo Sin Gluten',price:3.20,cat:'cerveza',catLabel:'CERVEZA',desc:''},
+  // VINO
+  {id:76,name:'Aeronauta',price:29.80,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:72,name:'Jean Leon 3055 Blanco',price:22.50,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:114,name:'Jean Leon Rosado',price:22.50,cat:'vino',catLabel:'ROSADO',desc:''},
+  {id:77,name:'La Poda Godello',price:19.00,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:73,name:'Marqués de Riscal',price:22.00,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:75,name:'Pazo das Bruxas',price:22.50,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:74,name:'Terras Gauda',price:26.00,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:78,name:'Venta Puerta N5',price:19.00,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:148,name:'Verdeo (Vegano)',price:16.50,cat:'vino',catLabel:'VINO BLANCO',desc:''},
+  {id:65,name:'22 Pies',price:16.95,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:63,name:'Carlota Suria',price:24.00,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:70,name:'Celeste Roble',price:19.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:66,name:'Cosme Palacio Crianza',price:27.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:79,name:'JEAN LEON 3055 Tinto',price:22.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:62,name:'Les Alcusses',price:22.00,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:64,name:'Mal Pastor',price:18.00,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:68,name:'Monteabellon Crianza',price:24.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:71,name:'Petit Pittacum',price:17.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:67,name:'Sierra Cantabria Crianza',price:23.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:69,name:'Valduero Una Cepa',price:42.00,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:61,name:'Venta Puerto N12',price:21.50,cat:'vino',catLabel:'VINO TINTO',desc:''},
+  {id:86,name:'Copa de Vino Tinto (Rioja)',price:3.60,cat:'vino',catLabel:'COPA',desc:''},
+  {id:186,name:'Copa de Vino Blanco Albariño',price:3.80,cat:'vino',catLabel:'COPA',desc:''},
+  // SAKE
+  {id:85,name:'Jarra de Sake',price:6.00,cat:'sake',catLabel:'SAKE',desc:'Sake caliente o frío servido en jarra cerámica.'},
+  {id:107,name:'Karatanba',price:12.50,cat:'sake',catLabel:'SAKE',desc:'Sake junmai de carácter seco y perfil terroso.'},
+  {id:109,name:'MIO CLEAR (Sparkling Sake)',price:11.50,cat:'sake',catLabel:'SAKE ESPUMOSO',desc:'Sake espumoso suave con burbuja fina. Perfecto como aperitivo.'},
+  {id:110,name:'Nigori Sake',price:11.50,cat:'sake',catLabel:'SAKE',desc:'Sake sin filtrar, cremoso y dulce con notas de coco y vainilla.'},
+  {id:115,name:'Shouchu',price:18.50,cat:'sake',catLabel:'DESTILADO',desc:'Destilado japonés suave de boniato o cebada. Bajo en calorías.'},
+  {id:108,name:'Shuwa Shuwa',price:13.50,cat:'sake',catLabel:'SAKE ESPUMOSO',desc:'Sake artesanal espumoso con burbuja equilibrada y final seco.'},
+  {id:46,name:'Sake Sin Alcohol',price:11.50,cat:'sake',catLabel:'SIN ALCOHOL',desc:'Sake desalcoholizado con todo el sabor de arroz fermentado.'},
+  // TÉ & CAFÉ
+  {id:150,name:'Té Verde',price:2.80,cat:'te',catLabel:'TÉ',desc:'Té verde japonés sencha, delicado y herbal.'},
+  {id:55,name:'Té Dianhong de Árbol Antiguo',price:3.50,cat:'te',catLabel:'TÉ ESPECIAL',desc:'Té negro yunnanés de árboles centenarios. Notas de miel y malta.'},
+  {id:57,name:'Té Ganpu',price:3.20,cat:'te',catLabel:'TÉ ESPECIAL',desc:'Té oolong comprimido envejecido. Aroma terroso y profundo.'},
+  {id:56,name:'Té Jin Jun Mei',price:3.20,cat:'te',catLabel:'TÉ ESPECIAL',desc:'Té negro de yemas jóvenes con notas de caramelo y frutas rojas.'},
+  {id:58,name:'Té Tieguanyin',price:3.50,cat:'te',catLabel:'TÉ ESPECIAL',desc:'Oolong semioxidado. Floral, cremoso con regusto largo.'},
+  {id:40,name:'Americano',price:1.90,cat:'te',catLabel:'CAFÉ',desc:''},
+  {id:41,name:'Bombón',price:2.20,cat:'te',catLabel:'CAFÉ',desc:''},
+  {id:39,name:'Café con Leche',price:2.50,cat:'te',catLabel:'CAFÉ',desc:''},
+  {id:37,name:'Café Solo',price:1.90,cat:'te',catLabel:'CAFÉ',desc:''},
+  {id:42,name:'Carajillo',price:3.00,cat:'te',catLabel:'CAFÉ',desc:''},
+  {id:38,name:'Cortado',price:2.20,cat:'te',catLabel:'CAFÉ',desc:''},
 ];
 
 let cart = JSON.parse(localStorage.getItem('damura-cart')||'[]');
@@ -241,10 +275,19 @@ function removeFromCart(id){
   saveCart(); updateCartBar(); updateCardUI(id);
 }
 function updateCartBar(){
-  const n=getCount();
+  const n=getCount(); const total=getTotal();
   document.getElementById('cart-count').textContent=n;
-  document.getElementById('cart-total').textContent=getTotal().toFixed(2)+'€';
+  document.getElementById('cart-total').textContent=total.toFixed(2)+'€';
   document.getElementById('cart-bar').classList.toggle('hidden',n===0);
+  // also update header mini-cart
+  const link=document.getElementById('header-cart-link');
+  if(n>0){
+    link.classList.remove('hidden'); link.classList.add('flex');
+    document.getElementById('header-cart-count').textContent=n;
+    document.getElementById('header-cart-total').textContent=total.toFixed(2)+'€';
+  } else {
+    link.classList.add('hidden'); link.classList.remove('flex');
+  }
 }
 function updateCardUI(id){
   const item=getItem(id); const qty=item?item.qty:0;
@@ -262,16 +305,17 @@ function renderProducts(filter){
   document.getElementById('product-grid').innerHTML=items.map(p=>{
     const item=getItem(p.id); const qty=item?item.qty:0;
     const img=BASE_IMG+p.id+'/image_512';
+    const descHtml = p.desc ? `<p class="text-white/40 text-xs font-[Be_Vietnam_Pro] mt-1.5 leading-relaxed line-clamp-2">${p.desc}</p>` : '';
     return `<article class="group">
       <div class="aspect-[4/5] overflow-hidden mb-4 bg-[#231f1f] relative">
         <img src="${img}" alt="${p.name}"
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           onerror="this.style.opacity='0'"/>
         <div class="absolute inset-0 flex items-end justify-end p-3 pointer-events-none">
-          <button id="add-${p.id}" onclick="addToCart(${p.id})" class="pointer-events-auto ${qty>0?'hidden':''} bg-[#E8B33D] text-[#402d00] p-2.5 hover:scale-110 active:scale-90 transition-all shadow-lg">
+          <button id="add-${p.id}" onclick="addToCart(${p.id})" class="pointer-events-auto ${qty>0?'hidden':''} bg-[#C40F23] text-white p-2.5 hover:scale-110 active:scale-90 transition-all shadow-lg">
             <span class="material-symbols-outlined leading-none" style="font-size:20px">add</span>
           </button>
-          <div id="qty-${p.id}" class="${qty===0?'hidden':''} pointer-events-auto bg-[#E8B33D] text-[#402d00] flex items-center shadow-lg">
+          <div id="qty-${p.id}" class="${qty===0?'hidden':''} pointer-events-auto bg-[#C40F23] text-white flex items-center shadow-lg">
             <button onclick="removeFromCart(${p.id})" class="px-2 py-2 hover:bg-black/10 active:scale-90 transition-all">
               <span class="material-symbols-outlined leading-none" style="font-size:18px">remove</span>
             </button>
@@ -282,12 +326,15 @@ function renderProducts(filter){
           </div>
         </div>
       </div>
-      <div class="flex justify-between items-start gap-2">
-        <div class="flex-1 min-w-0">
-          <p class="font-[Space_Grotesk] text-[10px] tracking-widest uppercase text-[#E8B33D]/60 mb-1">${p.catLabel}</p>
-          <h3 class="font-[Epilogue] font-medium text-white text-base leading-snug">${p.name}</h3>
+      <div>
+        <div class="flex justify-between items-start gap-2">
+          <div class="flex-1 min-w-0">
+            <p class="font-[Space_Grotesk] text-[10px] tracking-widest uppercase text-[#C40F23]/80 mb-1">${p.catLabel}</p>
+            <h3 class="font-[Epilogue] font-medium text-white text-base leading-snug">${p.name}</h3>
+          </div>
+          <span class="font-[Space_Grotesk] font-semibold text-sm text-[#E8B33D] whitespace-nowrap mt-1">${p.price.toFixed(2)}€</span>
         </div>
-        <span class="font-[Space_Grotesk] font-semibold text-sm text-[#E8B33D] whitespace-nowrap mt-1">${p.price.toFixed(2)}€</span>
+        ${descHtml}
       </div>
     </article>`;
   }).join('');
@@ -295,11 +342,11 @@ function renderProducts(filter){
 
 function filterCategory(cat){
   document.querySelectorAll('.cat-btn').forEach(b=>{
-    b.classList.remove('bg-[#E8B33D]','border-[#E8B33D]','text-[#402d00]');
+    b.classList.remove('bg-[#C40F23]','border-[#C40F23]','text-white');
     b.classList.add('border-white/10','text-white/50');
   });
   const a=document.querySelector('[data-cat="'+cat+'"]');
-  if(a){a.classList.add('bg-[#E8B33D]','border-[#E8B33D]','text-[#402d00]');a.classList.remove('border-white/10','text-white/50');}
+  if(a){a.classList.add('bg-[#C40F23]','border-[#C40F23]','text-white');a.classList.remove('border-white/10','text-white/50');}
   renderProducts(cat);
 }
 

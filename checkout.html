@@ -4,11 +4,12 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&family=Krona+One&family=Space+Grotesk:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
   body { background-color: #161212; color: #eae0e0; min-height: 100dvh; }
+  body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: 0.035; pointer-events: none; z-index: 9999; mix-blend-mode: overlay; }
   .backdrop-blur-xl { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
 </style>
 <script id="tailwind-config">
@@ -54,7 +55,13 @@
     <a href="index.html" class="flex items-center gap-2 text-[#E8B33D] hover:opacity-70 transition-opacity">
       <span class="material-symbols-outlined">arrow_back</span>
     </a>
-    <div class="font-headline-display uppercase tracking-[0.2em] text-xl text-[#E8B33D] font-bold">DamurA</div>
+    <div class="flex items-center gap-2.5">
+      <img src="logo.svg" alt="Damura Ramen" class="h-8 w-8 flex-shrink-0"/>
+      <div class="flex flex-col leading-none">
+        <span class="font-['Krona_One'] tracking-[0.08em] text-[#E8B33D] text-base">Damura</span>
+        <span class="font-[Space_Grotesk] font-semibold tracking-[0.35em] text-[#C40F23] text-[8px] uppercase mt-0.5">Ramen</span>
+      </div>
+    </div>
     <div class="w-8"></div>
   </div>
 </header>
