@@ -350,7 +350,16 @@ function filterCategory(cat){
   });
   const a=document.querySelector('[data-cat="'+cat+'"]');
   if(a){a.classList.add('bg-[#C40F23]','border-[#C40F23]','text-white');a.classList.remove('border-white/10','text-white/50');}
+  // Force a reliable scroll reset across browsers before and after the grid rerender.
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   renderProducts(cat);
+  requestAnimationFrame(()=>{
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
 }
 
 renderProducts('all');
