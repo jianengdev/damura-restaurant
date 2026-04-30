@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { background-color: #161212; color: #eae0e0; min-height: 100dvh; }
+  .backdrop-blur-xl { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+</style>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-surface": "#eae0e0",
+          "on-surface-variant": "#d3c5af",
+          "surface-container": "#231f1f",
+          "surface-container-low": "#1f1b1b",
+          "on-primary": "#402d00",
+          "on-secondary-fixed": "#1d1c14",
+          "background": "#161212"
+        },
+        fontFamily: {
+          "headline-display": ["Epilogue"],
+          "headline-lg": ["Epilogue"],
+          "headline-md": ["Epilogue"],
+          "label-caps": ["Space Grotesk"],
+          "body-md": ["Be Vietnam Pro"],
+          "body-lg": ["Be Vietnam Pro"]
+        },
+        fontSize: {
+          "headline-display": ["64px", {lineHeight:"1.1",letterSpacing:"-0.04em",fontWeight:"700"}],
+          "headline-lg": ["40px", {lineHeight:"1.2",letterSpacing:"-0.02em",fontWeight:"600"}],
+          "headline-md": ["24px", {lineHeight:"1.4",fontWeight:"500"}],
+          "label-caps": ["12px", {lineHeight:"1",letterSpacing:"0.15em",fontWeight:"600"}],
+          "body-md": ["16px", {lineHeight:"1.6",fontWeight:"400"}],
+          "body-lg": ["18px", {lineHeight:"1.6",fontWeight:"400"}]
+        }
+      }
+    }
+  }
+</script>
+</head>
+<body class="font-body-md text-on-background selection:bg-primary selection:text-on-primary">
+
+<!-- Header -->
+<header class="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-[#E8B33D]/20">
+  <div class="w-full flex justify-between items-center px-6 py-4">
+    <a href="index.html" class="flex items-center gap-2 text-[#E8B33D] hover:opacity-70 transition-opacity">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <div class="font-headline-display uppercase tracking-[0.2em] text-xl text-[#E8B33D] font-bold">DamurA</div>
+    <div class="w-8"></div>
+  </div>
+</header>
+
+<main class="pt-32 pb-40 px-6 w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+  <!-- Left: Order Items -->
+  <div class="lg:col-span-7 space-y-12">
+    <section>
+      <h1 class="font-headline-lg text-on-surface mb-8">TU PEDIDO</h1>
+      <div id="order-items" class="space-y-6"></div>
+      <p id="empty-cart" class="hidden text-on-surface-variant font-body-md py-8 text-center">Tu cesta está vacía.<br><a href="index.html" class="text-[#E8B33D] underline">Volver al menú</a></p>
+    </section>
+  </div>
+
+  <!-- Right: Summary -->
+  <aside class="lg:col-span-5 lg:pl-12">
+    <div class="sticky top-32 bg-surface-container-low p-8 rounded-lg border border-[#E8B33D]/10 backdrop-blur-xl">
+      <h2 class="font-headline-md text-on-surface mb-8 border-b border-[#E8B33D]/20 pb-4">RESUMEN</h2>
+      <div class="space-y-4 mb-10">
+        <div class="flex justify-between">
+          <span class="font-body-md text-on-surface-variant">Subtotal</span>
+          <span id="subtotal" class="font-body-md text-on-surface">0.00€</span>
+        </div>
+        <div class="h-px w-full bg-[#E8B33D]/10 my-4"></div>
+        <div class="flex justify-between items-baseline">
+          <span class="font-headline-md text-on-surface">Total</span>
+          <span id="total-price" class="font-headline-lg text-[#E8B33D]">0.00€</span>
+        </div>
+      </div>
+      <button id="confirm-btn" onclick="confirmOrder()" class="w-full bg-[#E8B33D] hover:brightness-110 py-5 px-4 rounded-sm flex justify-center items-center gap-3 transition-all duration-300 active:scale-95 group">
+        <span class="font-label-caps text-on-secondary-fixed text-lg">CONFIRMAR PEDIDO</span>
+        <span class="material-symbols-outlined text-on-secondary-fixed group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </button>
+      <p class="mt-6 text-center text-xs font-label-caps text-on-surface-variant/50">AL CONFIRMAR ACEPTAS LAS CONDICIONES DEL LOCAL.</p>
+    </div>
+  </aside>
+</main>
+
+<!-- Confirmation Modal -->
+<div id="confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+  <div class="bg-[#1f1b1b] border border-[#E8B33D]/20 rounded-xl p-10 max-w-md w-full text-center space-y-6">
+    <span class="material-symbols-outlined text-[#E8B33D] text-6xl" style="font-size:64px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 48">check_circle</span>
+    <h2 class="font-headline-lg text-on-surface">¡Pedido confirmado!</h2>
+    <p class="font-body-md text-on-surface-variant">Tu pedido está siendo preparado. ¡Gracias!</p>
+    <a href="index.html" class="inline-block bg-[#E8B33D] text-[#402d00] px-8 py-3 font-label-caps text-label-caps hover:brightness-110 transition-all">
+      VOLVER AL MENÚ
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w-full bg-neutral-950 border-t border-[#E8B33D]/10 py-20">
+  <div class="w-full flex flex-col items-center gap-8 text-center px-4">
+    <div class="text-[#E8B33D] font-black font-headline-display tracking-widest">DAMURA RAMEN</div>
+    <nav class="flex flex-wrap justify-center gap-x-12 gap-y-4">
+      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PHILOSOPHY</a>
+      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PROVENANCE</a>
+      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">PRIVATE DINING</a>
+      <a class="font-label-caps text-white/30 hover:text-white transition-opacity" href="#">CONTACT</a>
+    </nav>
+    <div class="font-label-caps text-white/30 text-[10px] mt-8">© 2026 DAMURA RAMEN.</div>
+  </div>
+</footer>
+
+<script>
+const BASE_IMG = 'https://pos.damuraramen.com/web/image/product.product/';
+
+let cart = JSON.parse(localStorage.getItem('damura-cart')||'[]');
+
+function saveCart(){ localStorage.setItem('damura-cart', JSON.stringify(cart)); }
+function getItem(id){ return cart.find(i=>i.id===id); }
+function getTotal(){ return cart.reduce((s,i)=>s+i.price*i.qty, 0); }
+
+function addQty(id){
+  const item=getItem(id); if(item){item.qty+=1;} saveCart(); render();
+}
+function subQty(id){
+  const item=getItem(id); if(!item)return;
+  if(item.qty>1){item.qty-=1;}else{cart=cart.filter(i=>i.id!==id);}
+  saveCart(); render();
+}
+
+function render(){
+  const container = document.getElementById('order-items');
+  const emptyMsg = document.getElementById('empty-cart');
+  const confirmBtn = document.getElementById('confirm-btn');
+
+  if(cart.length===0){
+    container.innerHTML='';
+    emptyMsg.classList.remove('hidden');
+    confirmBtn.disabled=true;
+    confirmBtn.classList.add('opacity-40','cursor-not-allowed');
+  } else {
+    emptyMsg.classList.add('hidden');
+    confirmBtn.disabled=false;
+    confirmBtn.classList.remove('opacity-40','cursor-not-allowed');
+    container.innerHTML = cart.map(item=>{
+      const img = BASE_IMG+item.id+'/image_512';
+      return `
+        <div class="flex items-center gap-5 group">
+          <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-lg bg-[#231f1f] relative">
+            <img src="${img}" alt="${item.name}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" onerror="this.style.opacity='0'"/>
+          </div>
+          <div class="flex-grow min-w-0">
+            <div class="flex justify-between items-start gap-2">
+              <h3 class="font-headline-md text-on-surface text-base leading-tight">${item.name}</h3>
+              <span class="font-headline-md text-[#E8B33D] whitespace-nowrap">${(item.price*item.qty).toFixed(2)}€</span>
+            </div>
+            <div class="flex items-center gap-3 mt-3">
+              <div class="bg-[#E8B33D] text-[#402d00] flex items-center">
+                <button onclick="subQty(${item.id})" class="px-2 py-1.5 hover:bg-black/10 active:scale-90 transition-all">
+                  <span class="material-symbols-outlined leading-none" style="font-size:16px">${item.qty===1?'delete':'remove'}</span>
+                </button>
+                <span class="font-[Space_Grotesk] font-semibold text-sm min-w-[1.5rem] text-center">${item.qty}</span>
+                <button onclick="addQty(${item.id})" class="px-2 py-1.5 hover:bg-black/10 active:scale-90 transition-all">
+                  <span class="material-symbols-outlined leading-none" style="font-size:16px">add</span>
+                </button>
+              </div>
+              <span class="font-body-md text-on-surface-variant text-sm">${item.price.toFixed(2)}€ / ud.</span>
+            </div>
+          </div>
+        </div>
+        <div class="h-px w-full bg-[#E8B33D]/10"></div>
+      `;
+    }).join('');
+  }
+
+  const total = getTotal();
+  document.getElementById('subtotal').textContent = total.toFixed(2)+'€';
+  document.getElementById('total-price').textContent = total.toFixed(2)+'€';
+}
+
+function confirmOrder(){
+  if(cart.length===0)return;
+  localStorage.removeItem('damura-cart');
+  document.getElementById('confirm-modal').classList.remove('hidden');
+}
+
+render();
+</script>
+</body>
+</html>
