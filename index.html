@@ -312,8 +312,8 @@ function renderProducts(filter){
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           onerror="this.style.opacity='0'"/>
         <div class="absolute inset-0 flex items-end justify-end p-3 pointer-events-none">
-          <button id="add-${p.id}" onclick="addToCart(${p.id})" class="pointer-events-auto ${qty>0?'hidden':''} bg-[#C40F23] text-white p-2.5 hover:scale-110 active:scale-90 transition-all shadow-lg">
-            <span class="material-symbols-outlined leading-none" style="font-size:20px">add</span>
+          <button id="add-${p.id}" onclick="addToCart(${p.id})" class="pointer-events-auto ${qty>0?'hidden':''} bg-[#C40F23] text-white w-10 h-10 flex items-center justify-center hover:scale-110 active:scale-90 transition-all shadow-lg">
+            <span class="material-symbols-outlined block leading-none" style="font-size:20px">add</span>
           </button>
           <div id="qty-${p.id}" class="${qty===0?'hidden':''} pointer-events-auto bg-[#C40F23] text-white flex items-center shadow-lg">
             <button onclick="removeFromCart(${p.id})" class="px-2 py-2 hover:bg-black/10 active:scale-90 transition-all">
