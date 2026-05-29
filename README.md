@@ -23,5 +23,3 @@ A responsive, single-page digital menu and ordering interface for **Damura Ramen
 | `localStorage` | Cart & theme persistence |
 
 No npm, no bundler, no dependencies to install.
-
-## 📁 File Structure
